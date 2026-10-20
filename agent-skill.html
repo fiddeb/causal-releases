@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Causal agent skill installation</title><link rel="icon" type="image/png" href="favicon.png">
+<style>*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:#203039;background:#f5f8f9;font:17px/1.65 system-ui,sans-serif}header{background:#006c73;color:white;padding:28px max(24px,calc((100% - 1000px)/2))}header a{color:white}main{max-width:1000px;margin:auto;padding:24px}nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px;padding:24px;background:white;border:1px solid #d4e2e6;border-radius:12px}h1{font-size:2.5rem}h2{margin-top:64px;border-top:1px solid #d4e2e6;padding-top:24px}h1,h2,h3{line-height:1.25;scroll-margin-top:20px}a{color:#006c73}p,li{max-width:82ch}li+li{margin-top:8px}img{display:block;width:100%;height:auto;border:1px solid #c6d6db;border-radius:8px;margin:28px 0}code{font:0.9em ui-monospace,monospace;overflow-wrap:anywhere}pre{background:#172b32;color:#f0f7f8;padding:20px;border-radius:8px;overflow:auto}pre code{overflow-wrap:normal}table{border-collapse:collapse;width:100%;font-size:15px}th,td{text-align:left;vertical-align:top;padding:12px;border:1px solid #c6d6db}th{background:#e1eef0}.table-scroll{overflow:auto}footer{padding:40px 0;color:#526970}@media print{header,nav{display:none}h2{break-before:auto}img,table{break-inside:avoid}a{color:inherit}}</style>
+<header><strong>Causal · Connecting the dots</strong><br><a href="index.html">Home</a> · <a href="guide.html">User guide</a> · <a href="screenshots/index.html">Feature screenshot tour</a> · <a href="https://github.com/fiddeb/causal-releases/releases">Downloads</a></header>
+<main><h1 id="install-the-causal-investigation-skill">Install the Causal investigation skill</h1>
+<p>The optional skill guides your agent through evidence capture, findings, occurrence times, Current State and handovers. It includes MCP setup instructions. Causal itself works without an agent or model account. The download contains instructions and examples, not the Causal application or a running MCP server.</p><details><summary>Jump to a section</summary><nav aria-label="Guide contents"><a href="#download-and-check">Download and check</a>
+<a href="#install-in-codex">Install in Codex</a>
+<a href="#connect-the-local-mcp-server">Connect the local MCP server</a>
+<a href="#update-or-remove">Update or remove</a>
+<a href="#other-agent-clients">Other agent clients</a></nav></details><h2 id="download-and-check">Download and check</h2>
+<p>Download the <a href="downloads/causal-investigation.zip">Causal investigation skill ZIP</a> and its <a href="downloads/causal-investigation.zip.sha256">SHA-256 checksum</a> into the same folder. These files follow the skill published with this site; they can be updated independently of the application binary. The skill uses the Causal 2.0 payload schema. Update Causal if its live tool schemas lack a required capability.</p>
+<p>In Terminal, change to the folder containing both downloads, then verify:</p>
+<pre><code>shasum -a 256 -c causal-investigation.zip.sha256</code></pre>
+<p>Continue only if it reports <code>causal-investigation.zip: OK</code>. If verification fails, download both files again. The checksum detects mismatched or corrupted bytes; download both files from this trusted site. Review the skill text before use.</p>
+<h2 id="install-in-codex">Install in Codex</h2>
+<p>Extract the archive into your personal skill directory. The following commands refuse to overwrite an existing installation:</p>
+<pre><code>mkdir -p &quot;$HOME/.agents/skills&quot;
+if [ -e &quot;$HOME/.agents/skills/causal-investigation&quot; ] || [ -L &quot;$HOME/.agents/skills/causal-investigation&quot; ]; then
+  echo &quot;Causal skill already exists. Follow the update instructions below.&quot;
+else
+  unzip causal-investigation.zip -d &quot;$HOME/.agents/skills&quot;
+fi</code></pre>
+<p>The entrypoint must be <code>~/.agents/skills/causal-investigation/SKILL.md</code>, alongside <code>agents</code>, <code>references</code> and the license. For project-only use, extract into that project&#39;s <code>.agents/skills</code> instead. Install one copy for the intended scope.</p>
+<p>Codex normally detects local skills automatically. If the skill does not appear, restart Codex. You can invoke it explicitly with <code>$causal-investigation</code>. See the <a href="https://developers.openai.com/codex/skills">official skill documentation</a>.</p>
+<h2 id="connect-the-local-mcp-server">Connect the local MCP server</h2>
+<p>Install Causal using the <a href="guide.html#start-here">macOS setup instructions</a>. Find the executable and start the workspace:</p>
+<pre><code>command -v causal
+causal --version
+causal serve</code></pre>
+<p>Keep the service running. In another terminal, check existing Codex connections before adding one:</p>
+<pre><code>codex mcp list</code></pre>
+<p>If a <code>causal</code> connection already exists, inspect it and retain any deliberate custom workspace or key-file settings. For a new connection, use the absolute executable path reported above. Standard Apple Silicon Homebrew example:</p>
+<pre><code>codex mcp add causal -- /opt/homebrew/bin/causal mcp</code></pre>
+<p>The agent client starts <code>causal mcp</code> over stdio. The separate <code>causal serve</code> process owns the local workspace and API at <code>http://127.0.0.1:7432</code>. Do not add that address as an HTTP MCP endpoint. A remote-only client cannot start a binary on your Mac or access your local service through its own localhost.</p>
+<p>Authentication uses the existing local credential file automatically. Do not paste keys into chat or configuration. Custom workspaces need a matching API URL and <code>--key-file</code> path; the installed skill&#39;s <code>references/mcp-setup.md</code> contains the complete procedure, including configuration examples and safe error handling. Codex configuration follows the <a href="https://developers.openai.com/codex/mcp">official MCP documentation</a>.</p>
+<p>Reconnect the client after configuration changes, then ask your agent:</p>
+<pre><code>Use $causal-investigation to verify the Causal connection and list my investigations without changing anything.</code></pre>
+<p>A successful empty list is valid. Installing the skill does not itself configure or start MCP. Once connected, try a supplied observation with a known date and timezone and ask the agent to save it as a symptom and verify its event-time Timeline entry. Unknown times must remain explicitly unknown.</p>
+<h2 id="update-or-remove">Update or remove</h2>
+<p>Download and verify the new ZIP. Review differences and preserve local edits. Move the existing skill folder to a backup location outside all skill discovery directories, then extract the replacement. Also check older installations under <code>~/.codex/skills</code> and project-local copies to avoid duplicate or stale guidance. Keep the backup until you have verified discovery and a read-only MCP call.</p>
+<p>To remove the skill, move its folder outside the skill directories. Remove the MCP client entry separately only if you also want to disconnect it. Neither action deletes investigations or stops a running Causal service.</p>
+<h2 id="other-agent-clients">Other agent clients</h2>
+<p>Use the client&#39;s documented local skill directory or load the extracted <code>SKILL.md</code> and its references as instructions. Configure its MCP connection with the absolute Causal executable as the stdio command and <code>mcp</code> as its argument. The included metadata names the MCP dependency <code>causal</code>. Client support for skill discovery differs; this archive does not register a hosted plugin.</p><footer>Synthetic examples; current-build behavior. Use your browser's Print command for a reading copy.</footer></main></html>
