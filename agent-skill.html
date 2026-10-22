@@ -6,6 +6,7 @@
 <p>The optional skill guides your agent through evidence capture, findings, occurrence times, Current State and handovers. It includes MCP setup instructions. Causal itself works without an agent or model account. The download contains instructions and examples, not the Causal application or a running MCP server.</p><details><summary>Jump to a section</summary><nav aria-label="Guide contents"><a href="#download-and-check">Download and check</a>
 <a href="#install-in-codex">Install in Codex</a>
 <a href="#connect-the-local-mcp-server">Connect the local MCP server</a>
+<a href="#practice-testing-a-possible-cause">Practice testing a possible cause</a>
 <a href="#update-or-remove">Update or remove</a>
 <a href="#other-agent-clients">Other agent clients</a></nav></details><h2 id="download-and-check">Download and check</h2>
 <p>Download the <a href="downloads/causal-investigation.zip">Causal investigation skill ZIP</a> and its <a href="downloads/causal-investigation.zip.sha256">SHA-256 checksum</a> into the same folder. These files follow the skill published with this site; they can be updated independently of the application binary. The skill uses the Causal 2.0 payload schema. Update Causal if its live tool schemas lack a required capability.</p>
@@ -36,6 +37,14 @@ causal serve</code></pre>
 <p>Reconnect the client after configuration changes, then ask your agent:</p>
 <pre><code>Use $causal-investigation to verify the Causal connection and list my investigations without changing anything.</code></pre>
 <p>A successful empty list is valid. Installing the skill does not itself configure or start MCP. Once connected, try a supplied observation with a known date and timezone and ask the agent to save it as a symptom and verify its event-time Timeline entry. Unknown times must remain explicitly unknown.</p>
+<h2 id="practice-testing-a-possible-cause">Practice testing a possible cause</h2>
+<p>The skill includes <code>references/hypothesis-testing.md</code> for choosing a useful next check and interpreting negative or inconclusive results. It uses Causal&#39;s existing expected-result, next-test and reported-outcome fields.</p>
+<p>For a reading exercise, ask your agent:</p>
+<pre><code>Use $causal-investigation with references/latency-exercise.md.
+Present round 1 only and help me choose a prediction and next check.
+Do not save records or run commands.
+Wait before revealing later rounds or the review rubric.</code></pre>
+<p>The staged case includes a misleading correlation, checks with limited relevance and recovery with an unknown root cause. All data is synthetic. It is a separate text exercise from the built-in checkout demo and requires no live infrastructure. Saving practice records is optional and needs a deliberate choice of a disposable workspace and investigation.</p>
 <h2 id="update-or-remove">Update or remove</h2>
 <p>Download and verify the new ZIP. Review differences and preserve local edits. Move the existing skill folder to a backup location outside all skill discovery directories, then extract the replacement. Also check older installations under <code>~/.codex/skills</code> and project-local copies to avoid duplicate or stale guidance. Keep the backup until you have verified discovery and a read-only MCP call.</p>
 <p>To remove the skill, move its folder outside the skill directories. Remove the MCP client entry separately only if you also want to disconnect it. Neither action deletes investigations or stops a running Causal service.</p>

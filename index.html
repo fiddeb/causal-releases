@@ -24,7 +24,7 @@
   <script>
     try { if (localStorage.getItem('causal-site-theme') === 'light') document.documentElement.dataset.theme = 'light' } catch {}
     // Preserve links to sections from when the user guide occupied the site root.
-    const guideAnchors = ["causal-user-guide","start-here","understand-the-five-building-blocks","a-first-investigation-in-15-minutes","describe-the-investigation","one-place-to-add-work","your-profile-and-reported-people","capture-what-you-have","sources-and-attribution","times-and-timezone","inspect-correct-and-connect-evidence","personal-read-indicators","copy-and-download","assess-possible-causes","keep-current-state-useful","connect-the-dots-on-canvas","read-the-timeline","hand-over-to-another-person","close-archive-and-resume","merge-related-investigations","search-and-reuse-earlier-work","export-import-and-protect-your-workspace","permanent-deletion","delete-a-whole-archived-investigation","optional-terminal-and-agent-workflows","when-something-is-unexpected","onboarding-checklist","review-impact-and-current-state"];
+    const guideAnchors = ["causal-user-guide","start-here","understand-the-five-building-blocks","a-first-investigation-in-15-minutes","describe-the-investigation","tickets-and-discussion-channels","one-place-to-add-work","your-profile-and-reported-people","capture-what-you-have","sources-and-attribution","times-and-timezone","extract-text-from-a-screenshot","annotate-a-screenshot","inspect-correct-and-connect-evidence","personal-read-indicators","copy-and-download","assess-possible-causes","keep-current-state-useful","connect-the-dots-on-canvas","read-the-timeline","hand-over-to-another-person","close-archive-and-resume","merge-related-investigations","search-and-reuse-earlier-work","export-import-and-protect-your-workspace","permanent-deletion","delete-a-whole-archived-investigation","optional-terminal-and-agent-workflows","when-something-is-unexpected","onboarding-checklist","review-impact-and-current-state"];
     function preserveGuideLink() {
       if (guideAnchors.includes(location.hash.slice(1))) location.replace('guide.html' + location.hash);
     }
@@ -62,6 +62,9 @@
     <section><div class="wrap details-grid">
       <div><p class="eyebrow">Built for the next read</p><h2>Keep your place.<br>Keep the context.</h2><p>The guide and screenshots cover the current build. Check release notes for availability in your installed version.</p><a class="text-link" href="screenshots/index.html">See these features in the app →</a></div>
       <dl class="feature-list">
+        <div><dt>Read and mark screenshots.</dt><dd>Extract text locally from a selected area, review it, then save it with arrows, rectangles and text. Keep the original image.</dd></div>
+        <div><dt>See relationships.</dt><dd>Arrange evidence and findings on Canvas, group connected cards with Smart arrange, or follow the recorded outcome in Story view.</dd></div>
+        <div><dt>Keep the discussion close.</dt><dd>Add and edit ticket or channel references beside Current State. Use authored relationship badges and filters to focus the evidence list.</dd></div>
         <div><dt>Know what changed.</dt><dd>Personal read markers follow the revision you opened. New evidence and finding revisions become unread again.</dd></div>
         <div><dt>Read the incident in order.</dt><dd>Follow evidence by observation time, or switch to registration history to see when activity was recorded.</dd></div>
         <div><dt>Bring related investigations together.</dt><dd>Preview a merge into an existing primary. Copied evidence and findings keep their links, while the source is archived.</dd></div>
